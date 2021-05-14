@@ -46,49 +46,67 @@ def return_template(__template__):
 
     if request.method == 'POST':
 
-        print(request.form.get('delete_button'))
+        if request.form.get('delete_button'):
+            # get id of database entry  
+            delete_id = request.form['delete_button']
 
-        # delete_id = request.form.get('delete_button')
-        # status_id = request.form.get('status_button')
+            # connect to db
+            conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
+            c = conn.cursor()
 
-        # if delete_id is not None:
-        #     conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
-        #     c = conn.cursor()
+            c.execute("DELETE FROM orders WHERE id = ?", (delete_id))
 
-        #     c.execute("DELETE FROM orders WHERE ID = ?", (delete_id))
-        #     conn.commit()
-        #     conn.close()
+            conn.commit()
+            conn.close()
 
-        # if status_id is not None:
-        #     conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
-        #     c = conn.cursor()
+            return redirect(url_for('orderlist'))
+        elif request.form.get('status_button'):
+            # get id of database entry  
+            status_id = request.form['status_button']
 
-        #     c.execute("UPDATE orders SET status = 1 WHERE ID = ?", (status_id))
-        #     conn.commit()
-        #     conn.close()
-            
-            
-        # catch data of form
-        description = request.form['new_entry_description']
-        trackingLink = request.form['new_entry_trackingLink']
+            # connect to db
+            conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
+            c = conn.cursor()
 
-        # connect to db
-        conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
-        c = conn.cursor()
+            # get currently stored status from db
+            c.execute("SELECT status FROM orders WHERE id = ?;", (status_id))
+            db_status = c.fetchone()
 
-        # insert data into database
-        # note: qrcode is of type BLOB, which is a binary format
-        c.execute("INSERT INTO orders (description, trackinglink, qrcode, status) VALUES (?, ?, ?, ?);", (description, trackingLink, QRGenModule.createQRCode(trackingLink, description, IMG_PATH), 0))
-        conn.commit()
-        conn.close()
+            # toggle status
+            if db_status[0]:
+                c.execute("UPDATE orders SET status = 0 WHERE id = ?;", (status_id))
+            else:
+                c.execute("UPDATE orders SET status = 1 WHERE id = ?;", (status_id))
 
-        return redirect(url_for('orderlist'))
+            conn.commit()
+            conn.close()
+
+            return redirect(url_for('orderlist'))
+
+        else:
+   
+            # catch data of form
+            description = request.form['new_entry_description']
+            trackingLink = request.form['new_entry_trackingLink']
+
+            # connect to db
+            conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
+            c = conn.cursor()
+
+            # insert data into database
+            # note: qrcode is of type BLOB, which is a binary format
+            c.execute("INSERT INTO orders (description, trackinglink, qrcode, status) VALUES (?, ?, ?, ?);", (description, trackingLink, QRGenModule.createQRCode(trackingLink, description, IMG_PATH), 0))
+            conn.commit()
+            conn.close()
+
+            return redirect(url_for('orderlist'))
+
 
     else:
 
         # DATABASE DEBUG
         # db_clear_all_orders()
-        #db_create_orders_table()
+        # db_create_orders_table()
 
         conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
         c = conn.cursor()
