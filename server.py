@@ -9,16 +9,13 @@ from scripts.utils import remove_files, init_filesystem
 import scripts.orderlist as OrderlistModule
 import scripts.qrgenerator as QRGenModule
 
-
-DB_NAME = "eyo.db"
-
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/orderlist')
+@app.route('/orderlist', methods=['GET', 'POST'])
 def orderlist():
-    return OrderlistModule.render_template('orderlist.html')
+    return OrderlistModule.return_template('orderlist.html')
 
 @app.route('/qrgen', methods=['GET', 'POST'])
 def qrgenerator():
@@ -27,13 +24,10 @@ def qrgenerator():
 
 if __name__ == '__main__':
     # delete all qr code images on server restart
-    remove_files(QRGenModule.IMAGE_FILE_PATH)
+    #remove_files(QRGenModule.IMAGE_FILE_PATH)
 
     # create folders on the static path, if they do not already exist
     init_filesystem(STATIC_PATH)
-
-    # start db connection
-    dbconn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
-
+  
     app.run(host="0.0.0.0", debug=True)
 

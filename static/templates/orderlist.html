@@ -4,6 +4,49 @@
     </head>
 
     <body>
-        <p>Hello World!</p>
+        <table style="width: 50%;" border = "2">
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td>DESCRIPTION</td>
+                    <td>TRACKING LINK</td>
+                    <td>QRCODE</td>
+                    <td>STATUS</td> 
+                <tr>
+                    
+                    {%- for item in data -%}
+
+                    {% set var = item[4] %}
+
+
+                    <tr>
+                        <td>{{item[0]}}</td>
+                        <td>{{item[1]}}</td>
+                        <td>{{item[2]}}</td>
+                        <td><img src="{{item[3]}}"></td>
+                        <!--<td style={$ if {{item[4]}} = 0 $} "background-color:red;" {$ else $} "background-color:green;" {$ endif $}>{{item[4]}}</td>-->
+                        {% if var %}
+                            <td style="background-color:green;"></td>
+                        {% else %}
+                            <td style="background-color:red;"></td>
+                        {% endif %}
+                        <td>
+                            <button type="submit" name="delete_button" value="{{item[0]}}"> delete order {{item[0]}} </button>
+                            <br>
+                            <button type="submit" name="status_button" value="{{item[0]}}"> change status {{item[0]}} </button>
+                        </td>
+                    </tr>
+                    <br>
+                    {%- endfor -%}
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <form method="POST">
+            <input type="text" id="new_entry_description" name="new_entry_description" required=required>
+            <input type="url" id="new_entry_trackingLink" name="new_entry_trackingLink" required=required>
+            <button type="submit">submit</button>
+        </form>
+        
     </body>
 </html>
