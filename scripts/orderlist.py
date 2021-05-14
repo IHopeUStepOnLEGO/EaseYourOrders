@@ -3,9 +3,10 @@ from flask.globals import request
 from server import STATIC_PATH
 from flask import render_template, url_for, redirect
 import sqlite3
+import os
+
 
 import scripts.qrgenerator as QRGenModule
-
 DB_NAME = "eyo.db"
 IMG_PATH = "./static/images/"
 
@@ -53,6 +54,13 @@ def return_template(__template__):
             # connect to db
             conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
             c = conn.cursor()
+
+            # get entry to delete
+            c.execute("SELECT * FROM orders WHERE id = ?", (delete_id))
+            db_entry = c.fetchone()
+
+            # delete local qr code image
+            os.remove(db_entry[3])
 
             c.execute("DELETE FROM orders WHERE id = ?", (delete_id))
 
