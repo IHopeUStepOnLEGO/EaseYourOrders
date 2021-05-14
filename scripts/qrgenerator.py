@@ -67,6 +67,6 @@ def return_template(__template__):
         trackingLink = request.form['trackingLink']
         trackingLinkIdentifier = request.form['trackingLinkIdentifier']
 
-        return str(render_template(__template__, QRCodeIMGStyle="", QRCodeIMGFilename=createQRCode(trackingLink, trackingLinkIdentifier)))
+        return str(render_template(__template__, QRCodeIMGStyle="", QRCodeIMGFilename=createQRCode(trackingLink, trackingLinkIdentifier, IMAGE_FILE_PATH)))
     else:
         return str(render_template(__template__, QRCodeIMGStyle="display: none;"))
