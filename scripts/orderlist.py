@@ -7,6 +7,7 @@ import sqlite3
 import scripts.qrgenerator as QRGenModule
 
 DB_NAME = "eyo.db"
+IMG_PATH = "./static/images/"
 
 def db_clear_all_orders():
     conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
@@ -44,7 +45,9 @@ def convert_to_binary(__filename__):
 def return_template(__template__):
 
     if request.method == 'POST':
-        
+
+        print(request.form.get('delete_button'))
+
         # delete_id = request.form.get('delete_button')
         # status_id = request.form.get('status_button')
 
@@ -75,7 +78,7 @@ def return_template(__template__):
 
         # insert data into database
         # note: qrcode is of type BLOB, which is a binary format
-        c.execute("INSERT INTO orders (description, trackinglink, qrcode, status) VALUES (?, ?, ?, ?);", (description, trackingLink, QRGenModule.createQRCode(trackingLink, description), 0))
+        c.execute("INSERT INTO orders (description, trackinglink, qrcode, status) VALUES (?, ?, ?, ?);", (description, trackingLink, QRGenModule.createQRCode(trackingLink, description, IMG_PATH), 0))
         conn.commit()
         conn.close()
 

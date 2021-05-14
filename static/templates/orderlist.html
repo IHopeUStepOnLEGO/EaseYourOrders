@@ -31,7 +31,7 @@
                             <td style="background-color:red;"></td>
                         {% endif %}
                         <td>
-                            <button type="submit" name="delete_button" value="{{item[0]}}"> delete order {{item[0]}} </button>
+                            <button type="submit" name='delete_button' value="{{item[0]}}"> delete order {{item[0]}} </button>
                             <br>
                             <button type="submit" name="status_button" value="{{item[0]}}"> change status {{item[0]}} </button>
                         </td>
@@ -45,7 +45,7 @@
         <form method="POST">
             <input type="text" id="new_entry_description" name="new_entry_description" required=required>
             <input type="url" id="new_entry_trackingLink" name="new_entry_trackingLink" required=required>
-            <button type="submit">submit</button>
+            <button type="submit" name="add_new_entry_button">submit</button>
         </form>
         
     </body>

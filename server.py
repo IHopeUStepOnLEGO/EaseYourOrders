@@ -24,7 +24,7 @@ def qrgenerator():
 
 if __name__ == '__main__':
     # delete all qr code images on server restart
-    #remove_files(QRGenModule.IMAGE_FILE_PATH)
+    remove_files(QRGenModule.IMAGE_FILE_PATH)
 
     # create folders on the static path, if they do not already exist
     init_filesystem(STATIC_PATH)

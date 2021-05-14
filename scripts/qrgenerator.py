@@ -5,7 +5,7 @@ import qrcode
 import uuid
 from PIL import Image, ImageFont, ImageDraw, ImageOps
 
-IMAGE_FILE_PATH = STATIC_PATH + "/images/"
+IMAGE_FILE_PATH = STATIC_PATH + "/temp/"
 FONTS_PATH = STATIC_PATH + "/fonts"
 BORDER_SIZE = 5
 FONT_SIZE = 20
@@ -18,7 +18,7 @@ def add_border(input_image, output_image, border, color=0):
         raise RuntimeError('Border is not an integer or tuple!')
     bimg.save(output_image)
 
-def createQRCode(trackingLink, trackingLinkIdentifier):
+def createQRCode(trackingLink, trackingLinkIdentifier, __filepath__):
     # prepare qrcode
     qr = qrcode.QRCode(version=1, box_size=3, border=BORDER_SIZE)
     qr.add_data(trackingLink)
@@ -29,7 +29,7 @@ def createQRCode(trackingLink, trackingLinkIdentifier):
         imgname = "QRCode_" + str(trackingLinkIdentifier) + "_" + str(uuid.uuid1())[:8] + ".png"
     else:
         imgname = "QRCode_" +  str(uuid.uuid1())[:8] + ".png"
-    imgpath = IMAGE_FILE_PATH + imgname 
+    imgpath = __filepath__ + imgname 
 
     # create QRCode
     img = qr.make_image(fill='black', back_color='white')
