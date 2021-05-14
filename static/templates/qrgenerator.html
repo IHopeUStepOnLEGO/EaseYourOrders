@@ -1,0 +1,16 @@
+<html>
+   <head>
+   </head>
+   <body style="background-color: #f37aaf">
+      <form method="POST">
+         <label for="trackingLink">Tracking Link:</label>
+         <input type="url" id="trackingLink" name="trackingLink" required="required">
+         <br>
+         <label for="trackingLinkIdentifier">Identifier (opt.):</label>
+         <input type="text" id="trackingLinkIdentifier" name="trackingLinkIdentifier">
+         <button type="submit">submit</button>
+      </form>
+      <img src="{{ QRCodeIMGFilename }}" style="{{ QRCodeIMGStyle }}"">
+
+   </body>
+</html>
