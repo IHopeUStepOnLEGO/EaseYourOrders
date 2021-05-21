@@ -1,4 +1,3 @@
-from posixpath import basename
 from scripts.qrgenerator import createQRCode
 from flask.globals import request
 from server import STATIC_PATH
@@ -8,28 +7,14 @@ import os
 
 import json
 
+
 import scripts.qrgenerator as QRGenModule
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = "/database/"
 DB_NAME = "eyo.db"
-
-IMG_PATH = STATIC_PATH + "/images/"
-
-print("BASE_DIR: " +BASE_DIR)
-print("BASE_DIR: " +BASE_DIR)
-print("BASE_DIR: " +BASE_DIR)
-print("BASE_DIR: " +BASE_DIR)
-
+IMG_PATH = "./static/images/"
 
 def db_clear_all_orders():
-    try:
-        conn = sqlite3.connect(BASE_DIR + STATIC_PATH + DB_PATH + DB_NAME)
-    except sqlite3.OperationalError:
-        conn = sqlite3.connect("/eyo/static/database/eyo.db")
-
-
-    print("\n\n" + STATIC_PATH + DB_PATH + DB_NAME + "\n\n")
+    conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
+    print("\n\n" + STATIC_PATH + "" + "./database/" + "" + DB_NAME + "\n\n")
     c = conn.cursor()
 
     c.execute("DELETE FROM orders")
@@ -39,11 +24,7 @@ def db_clear_all_orders():
     conn.close()
 
 def db_create_orders_table():
-    try:
-        conn = sqlite3.connect(BASE_DIR + STATIC_PATH + DB_PATH + DB_NAME)
-    except sqlite3.OperationalError:
-        conn = sqlite3.connect("/eyo/static/database/eyo.db")
-
+    conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
     c = conn.cursor()
 
     c.execute("""CREATE Table orders (
@@ -78,7 +59,7 @@ def return_template(__template__):
         print(delete_id)
 
         # connect to db
-        conn = sqlite3.connect(BASE_DIR + STATIC_PATH + DB_PATH + DB_NAME)
+        conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
         c = conn.cursor()
 
         # get entry to delete
@@ -104,10 +85,7 @@ def return_template(__template__):
 
 
         # connect to db
-        try:
-            conn = sqlite3.connect(BASE_DIR + STATIC_PATH + DB_PATH + DB_NAME)
-        except sqlite3.OperationalError:
-            conn = sqlite3.connect("/eyo/static/database/eyo.db")        
+        conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
         c = conn.cursor()
 
         # get currently stored status from db
@@ -132,10 +110,7 @@ def return_template(__template__):
         trackingLink = request.form['new_entry_trackingLink']
 
         # connect to db
-        try:
-            conn = sqlite3.connect(BASE_DIR + STATIC_PATH + DB_PATH + DB_NAME)
-        except sqlite3.OperationalError:
-            conn = sqlite3.connect("/eyo/static/database/eyo.db")    
+        conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
         c = conn.cursor()
 
         # insert data into database
@@ -150,22 +125,20 @@ def return_template(__template__):
     else:
 
         # DATABASE DEBUG
-        # b_clear_all_orders()
+        # db_clear_all_orders()
         # db_create_orders_table()
-        try:
-            conn = sqlite3.connect(BASE_DIR + STATIC_PATH + DB_PATH + DB_NAME)
-        except sqlite3.OperationalError:
-            conn = sqlite3.connect("/eyo/static/database/eyo.db")
+
+        conn = sqlite3.connect(STATIC_PATH + "" + "./database/" + "" + DB_NAME)
+        c = conn.cursor()
 
         # c.execute("INSERT INTO orders (description, trackinglink, qrcode, status) VALUES ('order1', 'trackingLink1', 'qrcode1', 0)")
         # c.execute("INSERT INTO orders (description, trackinglink, qrcode, status) VALUES ('order2', 'trackingLink2', 'qrcode2', 0)")
         # c.execute("INSERT INTO orders (description, trackinglink, qrcode, status) VALUES ('order3', 'trackingLink3', 'qrcode3', 1)")
-        c = conn.cursor()
+        
         c.execute("SELECT * FROM orders")
         data = c.fetchall()
 
-        for d in data:
-            print(d[3])
+        print(data)
 
         conn.commit()
         conn.close()
