@@ -1,6 +1,36 @@
 <html>
     <head>
+        <script> 
+            async function changeStatus(e) 
+                {
+                    return fetch('./orderlist', {
+                        method: 'PUT',
+                        body: e.dataset.value
+                    }).then(async (e) => {
+                        console.log(e);
 
+                        if ((await e.json()).status)
+                        {
+                            location.reload();
+                        }
+                    });
+                }
+
+                async function deleteEntry(e) 
+                {
+                    return fetch('./orderlist', {
+                        method: 'DELETE',
+                        body: e.dataset.value
+                    }).then(async (e) => {
+                        console.log(e);
+
+                        if ((await e.json()).status)
+                        {
+                            location.reload();
+                        }
+                    });
+                }
+        </script>
     </head>
 
     <body>
@@ -29,10 +59,10 @@
                             <td style="background-color:red;"></td>
                         {% endif %}
                         <td>
-                            <form method="POST">
-                                <button type="submit" name='delete_button' value="{{item[0]}}"> delete order {{item[0]}} </button>
-                                <button type="submit" name="status_button" value="{{item[0]}}"> change status {{item[0]}} </button>
-                            </form>
+
+                            <button type="submit" name='delete_button' data-value="{{item[0]}}" onclick="deleteEntry(this)"> delete order {{item[0]}} </button>
+                            <button name="status_button" data-value="{{item[0]}}" onclick="changeStatus(this)"> change status {{item[0]}} </button>
+
                         </td>
                     </tr>
                     <br>

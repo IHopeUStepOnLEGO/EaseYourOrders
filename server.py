@@ -1,7 +1,18 @@
 from flask import Flask, render_template
 import sqlite3
+import os
 
-STATIC_PATH = "./static"
+
+if os.path.isdir("/static/"):
+    # windows pathing
+    print("windows pathing")
+    STATIC_PATH = "./static"
+elif os.path.isdir("./static/"):
+    # linux pathing
+    print("unix pathing")
+    STATIC_PATH = os.getcwd() + "/static"
+
+print("STATIC_PATH: " + STATIC_PATH)
 app = Flask(__name__, template_folder= STATIC_PATH + "/templates")
 
 # import external scripts here
@@ -13,7 +24,7 @@ import scripts.qrgenerator as QRGenModule
 def index():
     return render_template('index.html')
 
-@app.route('/orderlist', methods=['GET', 'POST'])
+@app.route('/orderlist', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def orderlist():
     return OrderlistModule.return_template('orderlist.html')
 
