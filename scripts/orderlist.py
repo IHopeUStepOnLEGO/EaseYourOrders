@@ -130,10 +130,6 @@ def return_template(__template__):
 
         conn = sqlite3.connect(STATIC_PATH + "/database" + DB_NAME)
         c = conn.cursor()
-
-        # c.execute("INSERT INTO orders (description, trackinglink, qrcode, status) VALUES ('order1', 'trackingLink1', 'qrcode1', 0)")
-        # c.execute("INSERT INTO orders (description, trackinglink, qrcode, status) VALUES ('order2', 'trackingLink2', 'qrcode2', 0)")
-        # c.execute("INSERT INTO orders (description, trackinglink, qrcode, status) VALUES ('order3', 'trackingLink3', 'qrcode3', 1)")
         
         c.execute("SELECT * FROM orders")
         data = c.fetchall()
